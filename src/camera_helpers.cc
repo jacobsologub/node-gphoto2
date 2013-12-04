@@ -327,6 +327,10 @@ GPCamera::capturePreview(take_picture_request *req){
     gp_file_free(file);
   }
 
+  if(retval == GP_OK && req->download){
+    retval = gp_file_get_data_and_size (file, &req->data, &req->length);
+  }
+
   req->ret = retval;
 }
 
