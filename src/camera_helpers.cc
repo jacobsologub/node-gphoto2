@@ -273,7 +273,7 @@ GPCamera::getCameraFile(take_picture_request *req, CameraFile **file){
 
 void
 GPCamera::downloadPicture(take_picture_request *req){
-	CameraFile *file;
+	CameraFile *file = 0;
   int retval;
   std::ostringstream folder;
   std::string name;
@@ -315,12 +315,13 @@ GPCamera::downloadPicture(take_picture_request *req){
 void
 GPCamera::capturePreview(take_picture_request *req){
   int retval;
-  CameraFile *file;
+  CameraFile *file = 0;
 
   retval = getCameraFile(req, &file);
 
   if(retval == GP_OK){
     retval = gp_camera_capture_preview(req->camera, file, req->context);
+    req->file = file;
   }
 
   if(!(req->target_path.empty() || req->socket_path.empty())) {

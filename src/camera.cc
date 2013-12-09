@@ -133,7 +133,11 @@ void GPCamera::Async_CaptureCb(uv_work_t *req, int status){
 
   capture_req->cb->Call(Context::GetCurrent()->Global(), argc, argv);
   capture_req->cb.Dispose();
-  if(capture_req->ret == GP_OK)  gp_file_free(capture_req->file);
+  
+  if(capture_req->ret == GP_OK && capture_req->file != 0) {
+    gp_file_free(capture_req->file);
+  }
+
   capture_req->cameraObject->Unref();
   gp_context_unref(capture_req->context);
 //  gp_camera_unref(capture_req->camera);
